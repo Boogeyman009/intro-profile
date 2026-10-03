@@ -7,7 +7,7 @@ import SectionNav from "./SectionNav";
 import ThemeToggle from "./ThemeToggle";
 
 export default function DynamicProfilePage() {
-  const { profile, loading, lastUpdated, refresh, setProfile } = useProfile();
+  const { profile, loading, refresh } = useProfile();
 
   if (loading && !profile) {
     return (
@@ -54,15 +54,6 @@ export default function DynamicProfilePage() {
       <main className="container">
         <ProfileView profile={profile} />
       </main>
-
-      <footer className="footer">
-        <span>Built with Next.js</span>
-        {lastUpdated && (
-          <span className="footer-updated">
-            · Live updated {lastUpdated.toLocaleTimeString()}
-          </span>
-        )}
-      </footer>
     </>
   );
 }
