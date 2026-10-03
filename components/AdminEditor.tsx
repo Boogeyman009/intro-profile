@@ -2,12 +2,15 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Profile, Experience, Education } from "@/lib/profile";
+import { Profile, Experience, Education, Stat } from "@/lib/profile";
+import ProfileView from "./ProfileView";
+import PhotoUpload from "./PhotoUpload";
+import ThemeToggle from "./ThemeToggle";
 
 export default function AdminEditor() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [saving, setSaving] = useState(false);
-  const [uploading, setUploading] = useState(false);
+  const [showPreview, setShowPreview] = useState(true);
   const [toast, setToast] = useState("");
 
   useEffect(() => {
@@ -44,30 +47,6 @@ export default function AdminEditor() {
   function updateField(field: keyof Profile, value: string) {
     if (!profile) return;
     setProfile({ ...profile, [field]: value });
-  }
-
-  async function handlePhotoUpload(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file || !profile) return;
-
-    setUploading(true);
-    const formData = new FormData();
-    formData.append("photo", file);
-
-    try {
-      const res = await fetch("/api/upload", { method: "POST", body: formData });
-      const data = await res.json();
-      if (res.ok) {
-        setProfile({ ...profile, photo: data.photo.split("?")[0] });
-        showToast("Photo uploaded!");
-      } else {
-        showToast(data.error || "Upload failed.");
-      }
-    } catch {
-      showToast("Upload failed.");
-    }
-    setUploading(false);
-    e.target.value = "";
   }
 
   function updateExperience(index: number, field: keyof Experience, value: string | string[]) {
@@ -179,6 +158,27 @@ export default function AdminEditor() {
     });
   }
 
+  function updateStat(index: number, field: keyof Stat, value: string | number) {
+    if (!profile) return;
+    const stats = [...(profile.stats ?? [])];
+    stats[index] = { ...stats[index], [field]: value };
+    setProfile({ ...profile, stats });
+  }
+
+  function addStat() {
+    if (!profile) return;
+    const newStat: Stat = { id: Date.now().toString(), label: "", value: 0, suffix: "" };
+    setProfile({ ...profile, stats: [...(profile.stats ?? []), newStat] });
+  }
+
+  function removeStat(index: number) {
+    if (!profile) return;
+    setProfile({
+      ...profile,
+      stats: (profile.stats ?? []).filter((_, i) => i !== index),
+    });
+  }
+
   if (!profile) {
     return (
       <div className="container" style={{ paddingTop: "4rem", textAlign: "center" }}>
@@ -193,42 +193,34 @@ export default function AdminEditor() {
         <Link href="/" className="btn btn-secondary">
           ← View Profile
         </Link>
-      </nav>
-
-      <main className="container">
-        <div className="admin-header">
-          <h1>Edit Profile</h1>
-          <button className="btn btn-success" onClick={handleSave} disabled={saving}>
-            {saving ? "Saving..." : "Save Changes"}
+        <div className="nav-actions">
+          <ThemeToggle />
+          <button className="btn btn-secondary" onClick={() => setShowPreview((p) => !p)}>
+            {showPreview ? "Hide Preview" : "Show Preview"}
           </button>
         </div>
+      </nav>
 
-        <div className="admin-section">
+      <div className={`admin-layout ${showPreview ? "admin-layout--split" : ""}`}>
+        <main className="admin-editor">
+          <div className="admin-header">
+            <h1>Edit Profile</h1>
+            <button className="btn btn-success" onClick={handleSave} disabled={saving}>
+              {saving ? "Saving..." : "Save Changes"}
+            </button>
+          </div>
+
+          <div className="admin-section">
           <h2>Basic Info</h2>
           <div className="card">
-            <div className="photo-upload">
-              <div className="photo-preview">
-                {profile.photo ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={`${profile.photo}?t=${Date.now()}`} alt="Profile" />
-                ) : (
-                  <span className="photo-placeholder">No photo</span>
-                )}
-              </div>
-              <div>
-                <label className="btn btn-secondary photo-btn">
-                  {uploading ? "Uploading..." : "Upload Photo"}
-                  <input
-                    type="file"
-                    accept="image/jpeg,image/png,image/webp,image/gif"
-                    onChange={handlePhotoUpload}
-                    disabled={uploading}
-                    hidden
-                  />
-                </label>
-                <p className="photo-hint">JPEG, PNG, WebP, or GIF · Max 5MB</p>
-              </div>
-            </div>
+            <PhotoUpload
+              photo={profile.photo}
+              name={profile.name}
+              onPhotoChange={(photo) => {
+                setProfile({ ...profile, photo });
+                showToast(photo ? "Photo updated!" : "Photo removed.");
+              }}
+            />
             <div className="form-row">
               <div className="form-group">
                 <label>Full Name</label>
@@ -238,6 +230,14 @@ export default function AdminEditor() {
                 <label>Title</label>
                 <input value={profile.title} onChange={(e) => updateField("title", e.target.value)} />
               </div>
+            </div>
+            <div className="form-group">
+              <label>Tagline (typing animation, use · to separate)</label>
+              <input
+                value={profile.tagline ?? ""}
+                onChange={(e) => updateField("tagline", e.target.value)}
+                placeholder="Backend Engineering · System Design · CI/CD"
+              />
             </div>
             <div className="form-row">
               <div className="form-group">
@@ -268,6 +268,47 @@ export default function AdminEditor() {
               />
             </div>
           </div>
+        </div>
+
+        <div className="admin-section">
+          <h2>Impact Stats</h2>
+          {(profile.stats ?? []).map((stat, i) => (
+            <div key={stat.id} className="item-card">
+              <div className="item-card-header">
+                <strong>Stat #{i + 1}</strong>
+                <button className="btn btn-danger" onClick={() => removeStat(i)}>
+                  Remove
+                </button>
+              </div>
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Label</label>
+                  <input value={stat.label} onChange={(e) => updateStat(i, "label", e.target.value)} />
+                </div>
+                <div className="form-group">
+                  <label>Value</label>
+                  <input
+                    type="number"
+                    value={stat.value}
+                    onChange={(e) => updateStat(i, "value", Number(e.target.value))}
+                  />
+                </div>
+              </div>
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Prefix</label>
+                  <input value={stat.prefix ?? ""} onChange={(e) => updateStat(i, "prefix", e.target.value)} />
+                </div>
+                <div className="form-group">
+                  <label>Suffix</label>
+                  <input value={stat.suffix ?? ""} onChange={(e) => updateStat(i, "suffix", e.target.value)} placeholder="%, +, etc." />
+                </div>
+              </div>
+            </div>
+          ))}
+          <button className="btn btn-add" onClick={addStat}>
+            + Add Stat
+          </button>
         </div>
 
         <div className="admin-section">
@@ -406,12 +447,28 @@ export default function AdminEditor() {
           </button>
         </div>
 
-        <div style={{ textAlign: "center", marginTop: "2rem" }}>
-          <button className="btn btn-success" onClick={handleSave} disabled={saving} style={{ padding: "0.75rem 2rem" }}>
-            {saving ? "Saving..." : "Save All Changes"}
-          </button>
-        </div>
-      </main>
+          <div style={{ textAlign: "center", marginTop: "2rem" }}>
+            <button className="btn btn-success" onClick={handleSave} disabled={saving} style={{ padding: "0.75rem 2rem" }}>
+              {saving ? "Saving..." : "Save All Changes"}
+            </button>
+          </div>
+        </main>
+
+        {showPreview && (
+          <aside className="live-preview">
+            <div className="live-preview-header">
+              <span>Live Preview</span>
+              <span className="live-badge">Updating in real time</span>
+            </div>
+            <div className="live-preview-body">
+              <ProfileView
+                profile={profile}
+                onPhotoChange={(photo) => setProfile({ ...profile, photo })}
+              />
+            </div>
+          </aside>
+        )}
+      </div>
 
       {toast && <div className="toast">{toast}</div>}
     </>

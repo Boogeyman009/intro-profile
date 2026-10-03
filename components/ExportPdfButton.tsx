@@ -8,7 +8,15 @@ function wrapText(doc: import("jspdf").jsPDF, text: string, x: number, y: number
   return y + lines.length * lineHeight;
 }
 
-export default function ExportPdfButton({ profile }: { profile: Profile }) {
+export default function ExportPdfButton({
+  profile,
+  className = "btn btn-secondary",
+  label = "↓ Download PDF",
+}: {
+  profile: Profile;
+  className?: string;
+  label?: string;
+}) {
   async function handleExport() {
     const { jsPDF } = await import("jspdf");
     const doc = new jsPDF({ unit: "mm", format: "a4" });
@@ -119,8 +127,8 @@ export default function ExportPdfButton({ profile }: { profile: Profile }) {
   }
 
   return (
-    <button className="btn btn-secondary" onClick={handleExport}>
-      ↓ Download PDF
+    <button className={className} onClick={handleExport}>
+      {label}
     </button>
   );
 }

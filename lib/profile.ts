@@ -17,15 +17,25 @@ export interface Education {
   details: string;
 }
 
+export interface Stat {
+  id: string;
+  label: string;
+  value: number;
+  suffix?: string;
+  prefix?: string;
+}
+
 export interface Profile {
   name: string;
   title: string;
+  tagline?: string;
   email: string;
   phone: string;
   location: string;
   linkedin: string;
   photo?: string;
   summary: string;
+  stats?: Stat[];
   experience: Experience[];
   skills: Record<string, string[]>;
   strengths: string[];

@@ -51,3 +51,22 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Upload failed" }, { status: 500 });
   }
 }
+
+export async function DELETE() {
+  try {
+    const profile = await getProfile();
+
+    if (profile.photo) {
+      const filename = path.basename(profile.photo);
+      const filepath = path.join(UPLOAD_DIR, filename);
+      await fs.unlink(filepath).catch(() => {});
+    }
+
+    profile.photo = "";
+    await saveProfile(profile);
+
+    return NextResponse.json({ success: true });
+  } catch {
+    return NextResponse.json({ error: "Failed to remove photo" }, { status: 500 });
+  }
+}
