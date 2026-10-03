@@ -18,11 +18,13 @@ export default function PhotoUpload({
   name,
   onPhotoChange,
   variant = "full",
+  fill = false,
 }: {
   photo?: string;
   name: string;
   onPhotoChange: (photo: string) => void;
   variant?: "full" | "compact";
+  fill?: boolean;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
@@ -98,16 +100,22 @@ export default function PhotoUpload({
 
   if (variant === "compact") {
     return (
-      <div className="photo-compact">
+      <div className={`photo-compact ${fill ? "photo-compact--fill" : ""}`}>
         <div
           className={`photo-compact-preview ${busy ? "photo-compact-preview--busy" : ""}`}
           onClick={() => !busy && inputRef.current?.click()}
         >
           {photo ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={previewSrc} alt={name} />
+            <img
+              src={previewSrc}
+              alt={name}
+              onError={(e) => {
+                e.currentTarget.style.display = "none";
+              }}
+            />
           ) : (
-            <span>{getInitials(name)}</span>
+            <span className="photo-compact-initials">{getInitials(name)}</span>
           )}
           <div className="photo-compact-overlay">
             {uploading ? "Uploading..." : removing ? "Removing..." : photo ? "Change" : "Add photo"}
@@ -116,7 +124,7 @@ export default function PhotoUpload({
 
         <input ref={inputRef} type="file" accept={ACCEPT} hidden onChange={handleInputChange} disabled={busy} />
 
-        {photo && (
+        {!fill && photo && (
           <button className="photo-remove-link" onClick={handleRemove} disabled={busy}>
             Remove
           </button>

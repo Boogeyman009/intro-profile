@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Profile } from "@/lib/profile";
 import AnimatedSection from "./AnimatedSection";
 import CountUp from "./CountUp";
@@ -47,6 +48,13 @@ export default function ProfileView({
   const typingTexts = profile.tagline
     ? profile.tagline.split("·").map((t) => t.trim())
     : [profile.title];
+  const [photoError, setPhotoError] = useState(false);
+  const showPhoto = profile.photo && !photoError;
+
+  useEffect(() => {
+    setPhotoError(false);
+  }, [profile.photo]);
+
   return (
     <div className={layout === "ad" ? "profile-ad" : undefined}>
       <section className="hero hero--split hero--animated">
@@ -55,12 +63,21 @@ export default function ProfileView({
             <PhotoUpload
               photo={profile.photo}
               name={profile.name}
-              onPhotoChange={onPhotoChange}
+              onPhotoChange={(photo) => {
+                setPhotoError(false);
+                onPhotoChange(photo);
+              }}
               variant="compact"
+              fill
             />
-          ) : profile.photo ? (
+          ) : showPhoto ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={`${profile.photo}?v=${profile.photo}`} alt={profile.name} className="hero-photo-img" />
+            <img
+              src={profile.photo}
+              alt={profile.name}
+              className="hero-photo-img"
+              onError={() => setPhotoError(true)}
+            />
           ) : (
             <div className="hero-photo-fallback">{getInitials(profile.name)}</div>
           )}

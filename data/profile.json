@@ -6,12 +6,32 @@
   "phone": "+91 82711-77009",
   "location": "Jharkhand, India",
   "linkedin": "https://linkedin.com/in/mtudu",
-  "photo": "",
+  "photo": "/uploads/profile.png",
   "stats": [
-    { "id": "1", "label": "Years Experience", "value": 4, "suffix": "+" },
-    { "id": "2", "label": "Users Impacted", "value": 200, "suffix": "+" },
-    { "id": "3", "label": "Query Time Cut", "value": 50, "suffix": "%" },
-    { "id": "4", "label": "Team Led", "value": 3, "suffix": "" }
+    {
+      "id": "1",
+      "label": "Years Experience",
+      "value": 4,
+      "suffix": "+"
+    },
+    {
+      "id": "2",
+      "label": "Users Impacted",
+      "value": 200,
+      "suffix": "+"
+    },
+    {
+      "id": "3",
+      "label": "Query Time Cut",
+      "value": 50,
+      "suffix": "%"
+    },
+    {
+      "id": "4",
+      "label": "Team Led",
+      "value": 3,
+      "suffix": ""
+    }
   ],
   "summary": "Software Developer, Manager with 4+ years in backend engineering, system design, CI/CD, and production support. At Waaree Autonova, lead 3 engineers on a Warehouse Management System (WMS) and Supplier Front. Delivered a live inventory and analysis portal used by 200+ users across the organization, with full traceability of raw material and finished goods. Reports that took 2–3 hours — and some a full day plus PPT dashboards — are now real time. Built in a short cycle using AI agents. At Genpact, Python/Flask APIs and Harness CI/CD cut query time 50%, release cycle 25%, and deployment time 40%.",
   "experience": [
@@ -45,11 +65,47 @@
     }
   ],
   "skills": {
-    "Programming & Frameworks": ["Python", "Flask", "Django", "React.js", "JavaScript", "CSS"],
-    "Backend & System Design": ["REST APIs", "API development", "Service integration", "Scalable architecture", "Data-flow design", "Database optimization"],
-    "Cloud, DevOps & AI": ["AWS (EC2, S3)", "Microsoft Azure", "Kubernetes", "Docker", "Harness", "CI/CD", "AI agents"],
-    "Databases": ["PostgreSQL", "MySQL", "MongoDB Atlas"],
-    "Tools & Practices": ["Git", "Bitbucket", "UNIX", "DBeaver", "VS Code", "Eclipse", "OutSystems Service Studio", "Agile/Scrum", "Requirement analysis"]
+    "Programming & Frameworks": [
+      "Python",
+      "Flask",
+      "Django",
+      "React.js",
+      "JavaScript",
+      "CSS"
+    ],
+    "Backend & System Design": [
+      "REST APIs",
+      "API development",
+      "Service integration",
+      "Scalable architecture",
+      "Data-flow design",
+      "Database optimization"
+    ],
+    "Cloud, DevOps & AI": [
+      "AWS (EC2, S3)",
+      "Microsoft Azure",
+      "Kubernetes",
+      "Docker",
+      "Harness",
+      "CI/CD",
+      "AI agents"
+    ],
+    "Databases": [
+      "PostgreSQL",
+      "MySQL",
+      "MongoDB Atlas"
+    ],
+    "Tools & Practices": [
+      "Git",
+      "Bitbucket",
+      "UNIX",
+      "DBeaver",
+      "VS Code",
+      "Eclipse",
+      "OutSystems Service Studio",
+      "Agile/Scrum",
+      "Requirement analysis"
+    ]
   },
   "strengths": [
     "Full Material Traceability",

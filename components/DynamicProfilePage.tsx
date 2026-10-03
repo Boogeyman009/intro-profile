@@ -52,11 +52,7 @@ export default function DynamicProfilePage() {
       </nav>
 
       <main className="container">
-        <ProfileView
-          profile={profile}
-          editablePhoto
-          onPhotoChange={(photo) => setProfile({ ...profile, photo })}
-        />
+        <ProfileView profile={profile} />
       </main>
 
       <footer className="footer">
