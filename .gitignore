@@ -1,0 +1,10 @@
+node_modules/
+.next/
+out/
+.env*.local
+*.tsbuildinfo
+next-env.d.ts
+
+# Uploaded photos (keep directory, ignore files)
+public/uploads/*
+!public/uploads/.gitkeep

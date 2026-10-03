@@ -1,0 +1,75 @@
+{
+  "name": "Manoj Kumar Tudu",
+  "title": "Software Developer, Manager",
+  "email": "mtudu71@gmail.com",
+  "phone": "+91 82711-77009",
+  "location": "Jharkhand, India",
+  "linkedin": "https://linkedin.com/in/mtudu",
+  "photo": "",
+  "summary": "Software Developer, Manager with 4+ years in backend engineering, system design, CI/CD, and production support. At Waaree Autonova, lead 3 engineers on a Warehouse Management System (WMS) and Supplier Front. Delivered a live inventory and analysis portal used by 200+ users across the organization, with full traceability of raw material and finished goods. Reports that took 2–3 hours — and some a full day plus PPT dashboards — are now real time. Built in a short cycle using AI agents. At Genpact, Python/Flask APIs and Harness CI/CD cut query time 50%, release cycle 25%, and deployment time 40%.",
+  "experience": [
+    {
+      "id": "1",
+      "role": "Software Developer, Manager",
+      "company": "Waaree Autonova",
+      "period": "Jun 2026 – Present",
+      "highlights": [
+        "Lead a team of 3 engineers on WMS and Supplier Front, from client requirements through development, deployment, and production support.",
+        "Work directly with clients to capture warehouse and sourcing workflows, then translate them into scalable data flows, APIs, database operations, and integrations.",
+        "Own end-to-end delivery across development, testing, deployment, and production validation, and resolve real-time production issues to keep warehouse and dispatch operations running.",
+        "Built a live inventory and analysis portal used by 200+ users across the organization with full traceability of raw material and finished goods.",
+        "Reports that took 2–3 hours, and some that took a full day, are now real time. Delivered in a short cycle using AI agents.",
+        "Warehouse Management System (WMS) for raw materials and finished goods: material tracking, shop-floor scanning, warehouse visibility, RM outward workflows, and QR-based digitization.",
+        "Supplier Front sources material from both offshore and domestic suppliers. Suppliers submit bids on the portal for reverse auctions (RA) and RFQs."
+      ]
+    },
+    {
+      "id": "2",
+      "role": "Consultant → Software Engineer",
+      "company": "Genpact India Pvt. Ltd., Hyderabad",
+      "period": "Jul 2022 – Jun 2026",
+      "highlights": [
+        "Developed and maintained ~15 backend APIs using Python/Flask, with PostgreSQL data operations and integrations.",
+        "Built applications using Python, Django, React, and SQL, improving database query response time by 50%.",
+        "Designed a React/Python release-management portal and automated deployments with Harness IDP and CI/CD, reducing the release cycle by 25% and deployment time by 40%.",
+        "Led incident management that reduced system outages by 30% in the first quarter, exceeding a 15% annual target.",
+        "Identified infrastructure and workflow bottlenecks through large-scale log and data analysis, improving system efficiency by 45%."
+      ]
+    }
+  ],
+  "skills": {
+    "Programming & Frameworks": ["Python", "Flask", "Django", "React.js", "JavaScript", "CSS"],
+    "Backend & System Design": ["REST APIs", "API development", "Service integration", "Scalable architecture", "Data-flow design", "Database optimization"],
+    "Cloud, DevOps & AI": ["AWS (EC2, S3)", "Microsoft Azure", "Kubernetes", "Docker", "Harness", "CI/CD", "AI agents"],
+    "Databases": ["PostgreSQL", "MySQL", "MongoDB Atlas"],
+    "Tools & Practices": ["Git", "Bitbucket", "UNIX", "DBeaver", "VS Code", "Eclipse", "OutSystems Service Studio", "Agile/Scrum", "Requirement analysis"]
+  },
+  "strengths": [
+    "Full Material Traceability",
+    "Live Inventory Analytics",
+    "Supplier Sourcing (RA & RFQ)",
+    "System Design",
+    "Team Leadership",
+    "Production Support",
+    "AI Agents",
+    "Python / React",
+    "CI/CD & Release Automation",
+    "Customer-Facing Delivery"
+  ],
+  "education": [
+    {
+      "id": "1",
+      "degree": "B.Tech. in Civil Engineering",
+      "institution": "NIT Jamshedpur",
+      "year": "2022",
+      "details": "CGPA: 7.32"
+    },
+    {
+      "id": "2",
+      "degree": "XII",
+      "institution": "DAV Public School, Dhanbad, Jharkhand",
+      "year": "2017",
+      "details": ""
+    }
+  ]
+}
