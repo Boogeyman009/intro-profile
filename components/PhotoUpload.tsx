@@ -4,6 +4,11 @@ import { useCallback, useRef, useState } from "react";
 
 const ACCEPT = "image/jpeg,image/png,image/webp,image/gif";
 
+function photoPreviewSrc(photo: string, version: number) {
+  if (photo.startsWith("data:")) return photo;
+  return `${photo}?v=${version}`;
+}
+
 function getInitials(name: string) {
   return name
     .split(" ")
@@ -46,8 +51,7 @@ export default function PhotoUpload({
         const data = await res.json();
 
         if (res.ok) {
-          const url = data.photo.split("?")[0];
-          onPhotoChange(url);
+          onPhotoChange(data.photo);
           setVersion(Date.now());
         } else {
           setError(data.error || "Upload failed.");
@@ -96,7 +100,7 @@ export default function PhotoUpload({
   }
 
   const busy = uploading || removing;
-  const previewSrc = photo ? `${photo}?v=${version}` : "";
+  const previewSrc = photo ? photoPreviewSrc(photo, version) : "";
 
   if (variant === "compact") {
     return (

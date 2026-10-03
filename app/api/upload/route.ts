@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs/promises";
-import path from "path";
 import { getProfile, saveProfile } from "@/lib/profile";
 
-const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads");
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 const MAX_SIZE = 5 * 1024 * 1024;
 
@@ -24,29 +21,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "File must be under 5MB" }, { status: 400 });
     }
 
-    await fs.mkdir(UPLOAD_DIR, { recursive: true });
-
-    const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
-    const filename = `profile.${ext}`;
-    const filepath = path.join(UPLOAD_DIR, filename);
-
     const bytes = await file.arrayBuffer();
-    await fs.writeFile(filepath, Buffer.from(bytes));
+    const photo = `data:${file.type};base64,${Buffer.from(bytes).toString("base64")}`;
 
-    // Remove old profile photos with different extensions
-    const existing = await fs.readdir(UPLOAD_DIR).catch(() => [] as string[]);
-    for (const f of existing) {
-      if (f.startsWith("profile.") && f !== filename) {
-        await fs.unlink(path.join(UPLOAD_DIR, f)).catch(() => {});
-      }
-    }
-
-    const photoUrl = `/uploads/${filename}?t=${Date.now()}`;
     const profile = await getProfile();
-    profile.photo = photoUrl.split("?")[0];
+    profile.photo = photo;
     await saveProfile(profile);
 
-    return NextResponse.json({ success: true, photo: photoUrl });
+    return NextResponse.json({ success: true, photo });
   } catch {
     return NextResponse.json({ error: "Upload failed" }, { status: 500 });
   }
@@ -55,13 +37,6 @@ export async function POST(request: NextRequest) {
 export async function DELETE() {
   try {
     const profile = await getProfile();
-
-    if (profile.photo) {
-      const filename = path.basename(profile.photo);
-      const filepath = path.join(UPLOAD_DIR, filename);
-      await fs.unlink(filepath).catch(() => {});
-    }
-
     profile.photo = "";
     await saveProfile(profile);
 
